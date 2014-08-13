@@ -4,7 +4,7 @@ security-updates
 Create a roll with security updates
 
 The roll is based on using updateinfo.xml generation process described in
-`this blog <http://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html>`_
+http://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html
 
 3rd party components
 -------------------------
