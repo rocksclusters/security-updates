@@ -34,7 +34,7 @@ if SENTRY:
     setup_logging(handler)
 
 # What releases would you like to track. 'other' is mandatory
-RELEASES = ['6','other']
+RELEASES = ['other', '6']
 
 # What severity levels do we want to include
 SEVERITY = ['Critical', 'Important']
