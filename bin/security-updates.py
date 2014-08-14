@@ -100,16 +100,6 @@ class App(rocks.app.Application):
 		self.getLocalRepos()
 		self.setRolldirs()
 
-	def parseArg(self, c):
-		if rocks.app.Application.parseArg(self, c):
-			return 1
-		elif c[0] == '--list':
-			self.list = True
-		else:
-			return 0
-
-		return 1
-
 	def writeHeader(self):
 		txt = '<?xml version="1.0" standalone="no"?>\n'
 		txt += '<kickstart>\n'
@@ -237,8 +227,8 @@ class App(rocks.app.Application):
 		startline = 0
 		endline = len(lines)
 		for l in lines:
-			if l.find("package(s) needed for security") > 0:
-				startline = count + 2
+			if l.find("needed for security") > 0:
+				startline = count + 1
 			if l.find("Obsoleting") > -1 :
 				endline = count
 			count += 1
@@ -295,9 +285,10 @@ class App(rocks.app.Application):
 		self.writeXML()
 		self.writeScript()
 
-		#self.testFunc()
+	def runTest(self):
+		self.testFunc()
 
 app = App(sys.argv)             
-#app.parseArgs()                 
 app.run()
+#app.runTest()
 
