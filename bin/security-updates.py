@@ -63,6 +63,7 @@ import string
 import subprocess
 import glob
 import platform
+import errno
 import rocks.app
 
 class App(rocks.app.Application):
@@ -198,6 +199,7 @@ class App(rocks.app.Application):
 		self.arch = platform.machine()
 		reposDir = glob.glob("%s/%s/*/" % (self.yumrepos, self.arch) )[0]
 		self.reposlist = os.listdir(reposDir)
+		self.reposlist = [ x for x in self.reposlist if x.find("Rocks") < 0 ] 
 
 	def setRolldirs(self):
 		for name in [self.arch, "noarch"]:	
@@ -219,15 +221,20 @@ class App(rocks.app.Application):
 			self.modifyRepodata(release)
 			content = self.listUpdates(reposString)
 			fname = "%s/%s.out" % (self.updatesdir, release)
-			fout = open(fname , 'w')
-			fout.write(content)
-			fout.close()
+			try:
+				fout = open(fname , 'w')
+				fout.write(content)
+				fout.close()
+			except IOError :
+				continue
 			self.parsePackageNames(content)
+
 
 	def parsePackageNames(self, content):
 		lines = content.split("\n")
 		
 		count = 0
+		startline = 0
 		endline = len(lines)
 		for l in lines:
 			if l.find("package(s) needed for security") > 0:
@@ -238,6 +245,7 @@ class App(rocks.app.Application):
 
 		lines = lines[startline:endline]
 		for l in lines:
+			if len(l) < 1: continue
 			rpmarch,version,repo = l.split()
 			rpm,arch = rpmarch.split(".")
 			if rpm in self.rpms: 
@@ -250,9 +258,12 @@ class App(rocks.app.Application):
 		reposString = ",".join(self.reposlist)
 		for release in self.releases:
 			fname = "%s/%s.out" % (self.updatesdir, release)
-			fin = open(fname , 'r')
-			content = fin.read()
-			fin.close()
+			try:
+				fin = open(fname , 'r')
+				content = fin.read()
+				fin.close()
+			except IOError :
+				continue 
 			self.parsePackageNames(content)
 
 	def modifyRepodata(self, release):
