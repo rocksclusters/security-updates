@@ -31,9 +31,9 @@ Building the roll
 
 Checkout roll distribution from git repo :
 
-   # git clone https://github.com/rocksclusters/security-updates.git  
-   # cd security-updates/  
-   # make roll
+     # git clone https://github.com/rocksclusters/security-updates.git  
+     # cd security-updates/  
+     # make roll
 
 The roll iso image name is of the form: hostname-security-updates-date-0.arch.disk1.iso. 
 For example, on the x86_64-based frontend with the FQDN of rocks-45.sdsc.edu, the roll will be named
@@ -44,13 +44,13 @@ Installing the roll
 
 To install the above example roll :  
 
-   # rocks add roll rocks-45.sdsc.edu-security-updates-2014.08.14-0.x86_64.disk1.iso  
-   # rocks enable roll rocks-45.sdsc.edu-security-updates   
-   # (cd /export/rocks/install; rocks create distro)  
-   # yum clean all  
-   # yum check-update  
+     # rocks add roll rocks-45.sdsc.edu-security-updates-2014.08.14-0.x86_64.disk1.iso  
+     # rocks enable roll rocks-45.sdsc.edu-security-updates   
+     # (cd /export/rocks/install; rocks create distro)  
+     # yum clean all  
+     # yum check-update  
 
 The output of the last command should list all the RPMs that are now available from the Rocks repo.
 To install RPMS :
 
-   # yum update  
+     # yum update  
