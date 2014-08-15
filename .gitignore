@@ -5,7 +5,6 @@ SOURCES/
 BUILD/
 disk1/
 SPECS/
-security-updates.iso
 
 _os
 _arch
@@ -28,9 +27,12 @@ Rules-rcfiles.mk
 Rules-scripts.mk
 Rules.mk
 Rolls.mk
+roll-profile.mk
 
 
 # ignore output files and directories
 nodes/
 current/
 bin/downloadRPMS.sh
+*security-updates*.iso
+roll-*
