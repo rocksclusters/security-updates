@@ -1,0 +1,36 @@
+# build directory
+RPMS/
+SRPMS/
+SOURCES/
+BUILD/
+disk1/
+SPECS/
+security-updates.iso
+
+_os
+_arch
+_distribution
+.rpmmacros
+
+# ignore version* files
+rocks-version.mk
+rocks-version-common.mk
+
+# ignore python files
+python.mk
+*.pyc
+
+# ignore Rules* files
+Rules-install.mk
+Rules-linux-centos.mk
+Rules-linux.mk
+Rules-rcfiles.mk
+Rules-scripts.mk
+Rules.mk
+Rolls.mk
+
+
+# ignore output files and directories
+nodes/
+current/
+bin/downloadRPMS.sh
