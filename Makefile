@@ -62,13 +62,6 @@ include Rolls.mk
 default: roll
 
 pretar::
-	if [ ! -d archive-RPMS ]; then \
-	    /bin/mkdir -p archive-RPMS/noarch; \
-	    /bin/mkdir -p archive-RPMS/x86_64; \
-	    /bin/mkdir -p archive-RPMS/i686; \
-	fi
-
-	./bin/archive.sh 
 	./bin/security-updates.py 
 	/bin/bash ./bin/downloadRPMS.sh
 roll::
