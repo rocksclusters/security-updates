@@ -34,8 +34,6 @@ Binary yumdownloader must be present. If not, install with :
 
      # yum --enablerepo=base install yum-utils
 
-This roll has been tested on rocks 6.1 and 
-
 Building the roll
 -----------------
 
