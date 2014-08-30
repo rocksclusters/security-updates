@@ -2,6 +2,7 @@ security-updates
 ================
 
 Create a roll with security updates.
+Has been tested on rocks 6.1 and 6.1.1
 
 Introduction
 --------------
@@ -26,6 +27,13 @@ and listed security updates rpms (and their dependencies) are downloaded and add
 The subsequent roll builds will add any new security-related rpm updates to the **security-updates/RPMS/*/** 
 and the latest iso will have all the rpms accummulated since the first **make roll**.
 
+Prerequisites
+--------------
+
+Binary yumdownloader must be present. If not, install with :
+
+     # yum --enablerepo=base install yum-utils
+
 Building the roll
 -----------------
 
@@ -36,8 +44,8 @@ Checkout roll distribution from git repo :
      # make roll
 
 The roll iso image name is of the form: hostname-security-updates-date-0.arch.disk1.iso. 
-For example, on the x86_64-based frontend with the FQDN of rocks-45.sdsc.edu, the roll will be named
-``rocks-45.sdsc.edu-security-updates-2014.08.14-0.x86_64.disk1.iso``.
+For example, on the x86_64-based frontend with the FQDN of rocks-45.sdsc.edu, the roll i
+build on Aug 14, 2014 will be named ``rocks-45.sdsc.edu-security-updates-2014.08.14-0.x86_64.disk1.iso``.
 
 Installing the roll
 ---------------------
