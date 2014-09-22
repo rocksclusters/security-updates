@@ -51,13 +51,14 @@ will be named ``rocks-45-security-updates-6.1-0.x86_64.disk1.iso``.
 Installing the roll
 ---------------------
 
-To install the above example roll :  
+To install the roll :  
 
      # rocks add roll rocks-45-security-updates-6.1-0.x86_64.disk1.iso
      # rocks enable roll rocks-45-security-updates   
      # (cd /export/rocks/install; rocks create distro)  
      # yum clean all  
      # yum check-update  
+
 
 The output of the last command should list all the RPMs that are now available from the Rocks repo.
 For example:   
@@ -91,3 +92,5 @@ To install RPMS :
 
 Or install specific updates one by one per your security requirements.
 
+The process of building and installing a roll  can be set as a cron job on a weekly/monthly
+or other basis. 
