@@ -1,6 +1,5 @@
-ROLLNAME	= $(shell uname -n)-security-updates
-NAME		= roll-$(shell uname -n)-security-updates
-VERSION		= $(shell date +%Y.%m.%d)
+ROLLNAME	= $(shell hostname -s)-security-updates
+NAME		= roll-$(shell hostname -s)-security-updates
 RELEASE		= 0
 COLOR		= royalblue
 ISOSIZE		= 0

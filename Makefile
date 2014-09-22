@@ -65,10 +65,8 @@ pretar::
 	./bin/security-updates.py 
 	/bin/bash ./bin/downloadRPMS.sh
 roll::
-	ln -s $(ROLLNAME)*.iso security-updates.iso
 
 clean::
-	rm -f security-updates.iso
 	rm -f $(ROLLNAME)*.iso
 	rm -f timestamp
 	rm -f *spec.mk

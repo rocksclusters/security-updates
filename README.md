@@ -43,17 +43,18 @@ Checkout roll distribution from git repo :
      # cd security-updates/  
      # make roll
 
-The roll iso image name is of the form: hostname-security-updates-date-0.arch.disk1.iso. 
-For example, on the x86_64-based frontend with the FQDN of rocks-45.sdsc.edu, the roll i
-build on Aug 14, 2014 will be named ``rocks-45.sdsc.edu-security-updates-2014.08.14-0.x86_64.disk1.iso``.
+The roll iso image name is of the form: ``hostname-security-updates-version-0.arch.disk1.iso``. 
+For example, on the x86_64-based frontend with the FQDN of ``rocks-45.sdsc.edu``, the roll 
+will be named ``rocks-45-security-updates-6.1-0.x86_64.disk1.iso``.
+
 
 Installing the roll
 ---------------------
 
 To install the above example roll :  
 
-     # rocks add roll rocks-45.sdsc.edu-security-updates-2014.08.14-0.x86_64.disk1.iso  
-     # rocks enable roll rocks-45.sdsc.edu-security-updates   
+     # rocks add roll rocks-45-security-updates-6.1-0.x86_64.disk1.iso
+     # rocks enable roll rocks-45-security-updates   
      # (cd /export/rocks/install; rocks create distro)  
      # yum clean all  
      # yum check-update  
@@ -62,3 +63,6 @@ The output of the last command should list all the RPMs that are now available f
 To install RPMS :
 
      # yum update  
+
+Or install specific UP updates one by noe as desired.
+
