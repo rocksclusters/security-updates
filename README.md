@@ -2,7 +2,7 @@ security-updates
 ================
 
 Create a roll with security updates.
-Has been tested on rocks 6.1 and 6.1.1
+Has been tested on rocks 6.0, 6.1 and 6.1.1
 
 Introduction
 --------------
@@ -60,9 +60,34 @@ To install the above example roll :
      # yum check-update  
 
 The output of the last command should list all the RPMs that are now available from the Rocks repo.
+For example:   
+
+     # yum check-update
+     Loaded plugins: fastestmirror, security
+     Loading mirror speeds from cached hostfile
+
+     epel-release.noarch      6-8                                     Rocks-6.0
+     firefox.x86_64           31.1.0-5.el6.centos                     Rocks-6.0
+     glibc.i686               2.12-1.132.el6_5.4                      Rocks-6.0
+     glibc.x86_64             2.12-1.132.el6_5.4                      Rocks-6.0
+     glibc-common.x86_64      2.12-1.132.el6_5.4                      Rocks-6.0
+     glibc-devel.i686         2.12-1.132.el6_5.4                      Rocks-6.0
+     glibc-devel.x86_64       2.12-1.132.el6_5.4                      Rocks-6.0
+     glibc-headers.x86_64     2.12-1.132.el6_5.4                      Rocks-6.0
+     glibc-static.x86_64      2.12-1.132.el6_5.4                      Rocks-6.0
+     kernel.x86_64            2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
+     kernel-devel.x86_64      2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
+     kernel-doc.noarch        2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
+     kernel-firmware.noarch   2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
+     kernel-headers.x86_64    2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
+     libvirt.x86_64           0.10.2-29.el6_5.12                      Rocks-6.0
+     libvirt-client.x86_64    0.10.2-29.el6_5.12                      Rocks-6.0
+     libvirt-python.x86_64    0.10.2-29.el6_5.12                      Rocks-6.0
+     procmail.x86_64          3.22-25.1.el6_5.1                       Rocks-6.0
+     
 To install RPMS :
 
      # yum update  
 
-Or install specific UP updates one by noe as desired.
+Or install specific updates one by one per your security requirements.
 
