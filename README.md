@@ -1,8 +1,7 @@
 security-updates
 ================
 
-Create a roll with security updates.
-Has been tested on rocks 6.0, 6.1 and 6.1.1
+Create a roll with security updates.  Has been tested on rocks 6.0, 6.1 and 6.1.1
 
 Introduction
 --------------
@@ -19,13 +18,18 @@ When the **make roll** is run for the first time, the **yum-plugin-security** RP
 and the plugins are enabled in **/etc/yum.conf**.
 
 The security information from downloaded ``errata.latest.xml`` is parsed and injected into
-the repomd.xml file.  
+the **repomd.xml** file.  
 
 The **yum check-update** command is run with ``--security`` flag that is now understood by yum
-and listed security updates rpms (and their dependencies) are downloaded and added to the roll iso.
+and listed security updates rpms (and their dependencies) are downloaded and added to the roll ISO.
 
-The subsequent roll builds will add any new security-related rpm updates to the **security-updates/RPMS/*/** 
-and the latest iso will have all the rpms accummulated since the first **make roll**.
+The subsequent roll builds will add any new security-related RPMs updates to the **security-updates/RPMS/** 
+and the latest ISO will have all the rpms accummulated since the first **make roll**.
+
+When the **make roll** is run a  working directory **current/** is created which contains the latest 
+**errata.latest.xml**  and the output files from **generate_info.py** run. The generated **bin/downloadRPMS.sh** 
+lists commands for downloading RPMs. 
+
 
 Prerequisites
 --------------
