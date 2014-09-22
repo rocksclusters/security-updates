@@ -14,7 +14,7 @@ The 3rd party components used in the roll:
 + the ``generate_info.py`` uses ``errata.latest.xml`` file that is maintained and updated 
   by CEFS project http://cefs.steve-meier.de/errata.latest.xml
 
-When the ``make roll`` is run for the first time, the ``yum-plugin-security`` RPM is installed
+When the **make roll** is run for the first time, the ``yum-plugin-security`` RPM is installed
 and the plugins are enabled in ``/etc/yum.conf``.
 
 The security information from downloaded ``errata.latest.xml`` is parsed and injected into
@@ -27,7 +27,7 @@ The subsequent roll builds will add any new security-related RPMs updates to the
 and the latest ISO will have all the rpms accummulated since the first **make roll**.
 
 During the **make roll** run a directory ``current/``  and script ``bin/downloadRPMS.sh`` are generated.
-The direcotry contains the latest ``errata.latest.xml``  and the output files from ``generate_info.py`` run. 
+The directory contains the latest ``errata.latest.xml``  and the output files from ``generate_info.py`` run. 
 The script lists commands used for downloading RPMs. 
 
 
