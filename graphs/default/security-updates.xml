@@ -19,8 +19,4 @@
 
 	<edge from="server" to="security-updates"/>
 
-	<order head="TAIL">
-		<tail>security-updates</tail>
-	</order>
-
 </graph>
