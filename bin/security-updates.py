@@ -197,6 +197,12 @@ class App(rocks.app.Application):
 
 	def getLocalRepos(self):
 		""" create list of host yum repos to look for updates """
+		# Enable minimum default repos
+		cmd = "/usr/bin/yum  --enablerepo=base,updates repolist"
+		info, err = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+		if err:
+			print "Error in getLocalRepos(): %s" % err
+
 		self.arch = platform.machine()
 		reposDir = glob.glob("%s/%s/*/" % (self.yumrepos, self.arch) )[0]
 		self.reposlist = os.listdir(reposDir)
