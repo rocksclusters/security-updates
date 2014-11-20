@@ -98,3 +98,21 @@ Or install specific updates one by one per your security requirements.
 
 The process of building and installing a roll  can be set as a cron job on a weekly/monthly
 or other basis. 
+
+Multiple architecture packages resolution
+------------------------------------------
+
+It may happen that there is an update for multiple  architectures of RPM and both
+need to be isntalled. The roll downloads both architecutes and makes them available but yum 
+may still produce a dependency resolution error and suggest a work around. 
+Here is an example of how to deal with firefox dependency nss-softokn-freebl for i686 and x86_64: ::
+
+      yum update --exclude nss-softokn-freebl.i686
+      yum update --setopt=protected_multilib=false
+
+
+The first command will install rpm for x86_64 architecture and skip i686
+and the second command will fore install i686 version of the same rpm.
+ 
+ 
+
