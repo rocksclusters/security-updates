@@ -102,17 +102,20 @@ or other basis.
 Multiple architecture packages resolution
 ------------------------------------------
 
-It may happen that there is an update for multiple  architectures of RPM and both
-need to be isntalled. The roll downloads both architecutes and makes them available but yum 
-may still produce a dependency resolution error and suggest a work around. 
+It may happen that there is an update for multiple architectures of RPM and both
+need to be installed. The roll downloads both architecutes if both are listed as security updates
+and makes them available but yum will still produce a dependency resolution error and suggest a work around. 
 Here is an example of how to deal with firefox dependency nss-softokn-freebl for i686 and x86_64: ::
 
       yum update --exclude nss-softokn-freebl.i686
-      yum update --setopt=protected_multilib=false
 
+The command above will install rpms for x86_64 architecture and skip i686. Verify if you really need to install 
+the i686 rpm. If you do, install it with 
 
-The first command will install rpm for x86_64 architecture and skip i686
-and the second command will fore install i686 version of the same rpm.
- 
+      yum --enablerepo=base,updates install  nss-softokn-freebl.i686
+
+Using ``yum update --setopt=protected_multilib=false`` to intsall updates for both architectures may have an undesired
+effect of installing i686 and removing x86_64 fro the same verison of RPM. 
+
  
 
