@@ -272,6 +272,8 @@ class App(rocks.app.Application):
 		# parse package lines to collect rpm names and downloads commands
 		for l in lines:
 			rpmarch,version,repo = l.split()
+			if (repo == "updates"):
+				repo += ",base" 
 			rpm,arch = rpmarch.split(".")
 			if rpm in self.rpms: 
 				continue
