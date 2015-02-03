@@ -274,7 +274,7 @@ class App(rocks.app.Application):
 			rpmarch,version,repo = l.split()
 			if (repo == "updates"):
 				repo += ",base" 
-			rpm,arch = rpmarch.split(".")
+			rpm,arch = rpmarch.rsplit(".", 1)
 			if rpm in self.rpms: 
 				continue
 			# collect package names
