@@ -1,33 +1,40 @@
 security-updates
 ================
 
-Create a roll with security updates.  Has been tested on rocks 6.0, 6.1 and 6.1.1
+Create a roll with security updates.  Has been tested with Rocks 6.2 
 
 Introduction
 --------------
-The roll leverages updateinfo.xml generation process described in
-http://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html
+This roll fundamentally determines which packages in a rocks-dist created 
+ditribution require security updates. It then creates a roll with those
+packages.
+
+The roll was inspired by the updateinfo.xml generation process described in
+http://blog.vmfarms.com/2013/12/inject-little-security-in-to-your.html.
 The 3rd party components used in the roll:
  
-+ ``generate_info.py`` from https://github.com/hany55/generate_updateinfo
 
-+ the ``generate_info.py`` uses ``errata.latest.xml`` file that is maintained and updated 
++ This roll uses ``errata.latest.xml`` file that is maintained and updated 
   by CEFS project http://cefs.steve-meier.de/errata.latest.xml
 
-When the **make roll** is run for the first time, the ``yum-plugin-security`` RPM is installed
-and the plugins are enabled in ``/etc/yum.conf``.
++ a previous version used``generate_info.py`` from https://github.com/hany55/generate_updateinfo
 
-The security information from downloaded ``errata.latest.xml`` is parsed and injected into
-the ``repomd.xml`` file.  
+The roll works as follows
 
-The **yum check-update** command is run with ``--security`` flag that is now understood by yum
-and listed security updates rpms (and their dependencies) are downloaded and added to the roll ISO.
++ The security information is downloaded into ``errata.latest.xml`` 
 
-The subsequent roll builds will add any new security-related RPMs updates to the ``security-updates/RPMS/`` 
-and the latest ISO will have all the rpms accummulated since the first **make roll**.
++ The roll creates a local rocks-dist distro
+
++ the information from ``errata.latest.xml`` is used to determine which RPMS in the rocks-dist distro require update
+
++ It then downloads the required RPMs (and their dependencies) as RPMs
+for this roll. This utilizes yumdownloader
+
++ The roll can be added to the cluster, a new distro created and then 
+``yum update`` can used to upgrade the frontend.  
 
 During the **make roll** run a directory ``current/``  and script ``bin/downloadRPMS.sh`` are generated.
-The directory contains the latest ``errata.latest.xml``  and the output files from ``generate_info.py`` run. 
+The directory contains the latest ``errata.latest.xml``.
 The script lists commands used for downloading RPMs. 
 
 
@@ -47,48 +54,39 @@ Checkout roll distribution from git repo :
      # cd security-updates/  
      # make roll
 
-The roll iso image name is of the form: ``hostname-security-updates-version-0.arch.disk1.iso``. 
-For example, on the x86_64-based frontend with the FQDN of ``rocks-45.sdsc.edu``, the roll 
-will be named ``rocks-45-security-updates-6.1-0.x86_64.disk1.iso``.
-
+The roll iso image name is of the form: ``os-<rocks version>-security-updates-<date>-0.<arch>.disk1.iso``. 
 
 Installing the roll
 ---------------------
 
 To install the roll :  
 
-     # rocks add roll rocks-45-security-updates-6.1-0.x86_64.disk1.iso
-     # rocks enable roll rocks-45-security-updates   
+     # rocks add roll os-6.2-security-updates-08_01_2015-0.x86_64.disk1.iso
+     # rocks enable roll os-6.2-security-updates 
      # (cd /export/rocks/install; rocks create distro)  
      # yum clean all  
      # yum check-update  
 
-
 The output of the last command should list all the RPMs that are now available from the Rocks repo.
 For example:   
 
-     # yum check-update
-     Loaded plugins: fastestmirror, security
-     Loading mirror speeds from cached hostfile
-
-     epel-release.noarch      6-8                                     Rocks-6.0
-     firefox.x86_64           31.1.0-5.el6.centos                     Rocks-6.0
-     glibc.i686               2.12-1.132.el6_5.4                      Rocks-6.0
-     glibc.x86_64             2.12-1.132.el6_5.4                      Rocks-6.0
-     glibc-common.x86_64      2.12-1.132.el6_5.4                      Rocks-6.0
-     glibc-devel.i686         2.12-1.132.el6_5.4                      Rocks-6.0
-     glibc-devel.x86_64       2.12-1.132.el6_5.4                      Rocks-6.0
-     glibc-headers.x86_64     2.12-1.132.el6_5.4                      Rocks-6.0
-     glibc-static.x86_64      2.12-1.132.el6_5.4                      Rocks-6.0
-     kernel.x86_64            2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
-     kernel-devel.x86_64      2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
-     kernel-doc.noarch        2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
-     kernel-firmware.noarch   2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
-     kernel-headers.x86_64    2.6.32-431.29.2.el6.centos.plus         Rocks-6.0
-     libvirt.x86_64           0.10.2-29.el6_5.12                      Rocks-6.0
-     libvirt-client.x86_64    0.10.2-29.el6_5.12                      Rocks-6.0
-     libvirt-python.x86_64    0.10.2-29.el6_5.12                      Rocks-6.0
-     procmail.x86_64          3.22-25.1.el6_5.1                       Rocks-6.0
+    # yum check-update
+    Rocks-6.2                                                | 2.9 kB     00:00 ...
+    Rocks-6.2/primary_db                                     | 2.1 MB     00:00 ...
+    
+    cairo.x86_64                         1.8.8-6.el6_6                     Rocks-6.2
+    cairo-devel.x86_64                   1.8.8-6.el6_6                     Rocks-6.2
+    cups.x86_64                          1:1.4.2-67.el6_6.1                Rocks-6.2
+    cups-libs.x86_64                     1:1.4.2-67.el6_6.1                Rocks-6.2
+    kernel.x86_64                        2.6.32-504.23.4.el6               Rocks-6.2
+    kernel-devel.x86_64                  2.6.32-504.23.4.el6               Rocks-6.2
+    kernel-doc.noarch                    2.6.32-504.23.4.el6               Rocks-6.2
+    kernel-firmware.noarch               2.6.32-504.30.3.el6               Rocks-6.2
+    kernel-headers.x86_64                2.6.32-504.23.4.el6               Rocks-6.2
+    nss.x86_64                           3.19.1-3.el6_6                    Rocks-6.2
+    nss-sysinit.x86_64                   3.19.1-3.el6_6                    Rocks-6.2
+    nss-tools.x86_64                     3.19.1-3.el6_6                    Rocks-6.2
+    nss-util.x86_64                      3.19.1-1.el6_6                    Rocks-6.2
      
 To install RPMS :
 

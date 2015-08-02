@@ -61,11 +61,32 @@ include Rolls.mk
 
 default: roll
 
-pretar::
+## Rules to create a local rocks distro and yum repository so
+## that the main repo is unchanged
+
+yum.dirs:
+	- mkdir -p $(CACHEDIR) $(LOGDIR) $(REPOSDIR)
+
+yum.repos: yum.dirs
+	(cd /etc/$(REPOSDIR); tar cf - *repo) | ( cd $(REPOSDIR); tar xvfBp -)	
+
+yum.conf: yum.conf.in
+	sed -e "s#%PWD%#`pwd`#" yum.conf.in > yum.conf
+
+local.repo: yum.repos
+	sed -i 's#baseurl.*#baseurl=file://$(PWD)/rocks-dist/x86_64#' yum.repos.d/rocks-local.repo
+
+rocks-dist:
+	rocks create distro
+ 
+pretar:: yum.conf local.repo rocks-dist
 	./bin/security-updates.py 
 	/bin/bash ./bin/downloadRPMS.sh
+
 roll::
 
+clean-dist: 
+	-rm -rf rocks-dist
 clean::
 	rm -f $(ROLLNAME)*.iso
 	rm -f timestamp
@@ -74,4 +95,7 @@ clean::
 	rm -f _os _arch
 	rm -f bin/downloadRPMS.sh
 	rm -rf current/
+	rm -f yum.conf 
+	rm -rf $(CACHEDIR) $(LOGDIR) $(REPOSDIR) var
 
+veryclean: clean-dist clean

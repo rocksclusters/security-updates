@@ -17,6 +17,4 @@
 	<changelog>
 	</changelog>
 
-	<edge from="server" to="security-updates"/>
-
 </graph>
