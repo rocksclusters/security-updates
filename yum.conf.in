@@ -1,0 +1,10 @@
+[main]
+cachedir=%PWD%/var/cache/yum
+debuglevel=2
+logfile=%PWD%/var/log/yum.log
+reposdir=%PWD%/yum.repos.d
+pkgpolicy=newest
+distroverpkg=redhat-release
+tolerant=1
+exactarch=1
+assumeyes=1
