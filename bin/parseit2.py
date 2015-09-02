@@ -76,7 +76,7 @@ def pkglist(dirname):
 		pkgs.extend(map(lambda x: pkgrep(x),filenames))
 	return(pkgs)
 
-def updlist(pkgs,updates,filterlist=("alt","el7","el6_7","el5")):
+def updlist(pkgs,updates,filterlist=("alt","el7","el5")):
 	"""Find updates that are newer than pkgs. Filter out unwanteds"""
 	# create a list of package name and suffixes (no version-release) for filtering
 	purepkgs = map(lambda x: (x[0],x[2]),pkgs)

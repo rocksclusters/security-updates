@@ -112,6 +112,10 @@ class App(rocks.app.Application):
 		""" write script for rpms download"""
 		#if os.path.isfile(self.download_script):
 		#	os.remove(self.download_script)
+		ydl = "/usr/bin/yumdownloader"
+		ydconf = "--config=yum.conf --destdir %s/RPMS/x86_64 " + \
+			"--enablerepo=base,updates %s"  
+		ydresolv ="--resolve" 
 		
 		content = "#!/bin/bash\n\n"
 		# remove .rpm from the end of each package name
@@ -119,15 +123,26 @@ class App(rocks.app.Application):
                 
 		# download with resolution non-kernel packages
 		resolvePkgs = filter(lambda x: re.match("^kernel-.*",x) is None, yumdl)
-		resolvePkgs = map(lambda x: "/usr/bin/yumdownloader --resolve --config=yum.conf --destdir %s/RPMS/x86_64 --disablerepo='*' --enablerepo=base,updates %s" % \
-                                (self.rolldir,x), resolvePkgs)
+		ycmd = " ".join((ydl,ydresolv,ydconf))
+		resolvePkgs = map(lambda x: ycmd % \
+			(self.rolldir,x), resolvePkgs)
 		content += "\n".join(resolvePkgs)
 
 		# download without resolution kernel- packages
 		noResolvePkgs = filter(lambda x: re.match("^kernel-.*",x) is not None, yumdl)
-		noResolvePkgs = map(lambda x: "/usr/bin/yumdownloader --config=yum.conf --destdir %s/RPMS/x86_64 --disablerepo='*' --enablerepo=base,updates %s" % \
-                                (self.rolldir,x), noResolvePkgs)
+		ycmd = " ".join((ydl, ydconf))
+		noResolvePkgs = map(lambda x: ycmd % \
+                        (self.rolldir,x), noResolvePkgs)
 		content += "\n".join(noResolvePkgs)
+
+		# if noResolvePkgs has non-zero length download dracut-kernel
+		if len(noResolvePkgs) > 0:
+			dracutPkgs = ["dracut","dracut-kernel"]
+			ycmd = " ".join((ydl,ydresolv,ydconf))
+			dracutPkgs = map(lambda x: ycmd % \
+                                (self.rolldir,x), dracutPkgs)
+			content += "\n".join(dracutPkgs)
+			
 		self.writeFile(self.download_script, content)
 
 	def getErrata(self):
