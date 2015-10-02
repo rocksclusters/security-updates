@@ -59,6 +59,19 @@
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
+## Packages that are forced to latest update
+ENABLED-REPOS = base,updates
+FORCE-PKGS = 	glibc \
+		glibc-common \
+		glibc-devel \
+		glibc-headers \
+		glibc-static 
+
+FILELIST = force-pkgs-list
+
+.PHONY: $(FORCE-PKGS) force-pkgs
+
+
 default: roll
 
 ## Rules to create a local rocks distro and yum repository so
@@ -79,9 +92,19 @@ local.repo: yum.repos
 rocks-dist:
 	rocks create distro
  
-pretar:: yum.conf local.repo rocks-dist
+pretar:: yum.conf local.repo rocks-dist 
 	./bin/security-updates.py 
 	/bin/bash ./bin/downloadRPMS.sh
+	make force-pkgs
+
+##  Get packages that are forced to the latest version, irrespective of security. Usually this is 
+# just glibc as other software updates sometimes depend on latest glibc, not just the latest security update
+
+$(FORCE-PKGS):
+	yumdownloader --resolve --urls --disablerepo='*' --enablerepo=$(ENABLED-REPOS) --destdir=RPMS $(FORCE-PKGS)  | grep ^http >  $(FILELIST)
+	(cd RPMS/$(ARCH); wget -nc -i ../../$(FILELIST))
+
+force-pkgs: $(FORCE-PKGS)
 
 roll::
 
@@ -97,5 +120,6 @@ clean::
 	rm -rf current/
 	rm -f yum.conf 
 	rm -rf $(CACHEDIR) $(LOGDIR) $(REPOSDIR) var
+	rm -f $(FILELIST)
 
 veryclean: clean-dist clean
